@@ -3,7 +3,6 @@ Django base settings for all environments.
 """
 import os
 import sys
-
 import environ
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -87,7 +86,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db('DATABASE_URL', default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}")
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': "jobportal",
+        'USER': 'root',
+        'PASSWORD':'Tanu@4926',
+        'HOST': 'localhost'
+
+    }
 }
 
 # INTERNAL_IPS = ['127.0.0.1']
@@ -187,11 +193,18 @@ MESSAGE_TAGS = {
 
 
 # WhiteNoise compressed static files
+
+# settings.py
+
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
 
 # Security hardening toggles (typically overridden in production.py)
 SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=False)
